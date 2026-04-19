@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap');
+
+/* ================================================================
+   FIXED IVORY BASE SYSTEM
+   底色系統：象牙白，不隨調色盤切換。
+   調色盤只影響 --greek-* 和 --tint-* 變數。
+   ================================================================ */
+:root {
+  /* ── 固定象牙底色 ──────────────────────────────────────── */
+  --bg-ivory:       #F6F3EE;    /* 頁面背景：暖象牙白 */
+  --surface-01:     #FDFCF9;    /* 主卡片表面：近白 */
+  --surface-02:     #F0EDE6;    /* 次要底板：稍暖 */
+  --surface-03:     #E8E3DA;    /* 分隔/輸入背景 */
+
+  /* ── 固定文字色 ──────────────────────────────────────── */
+  --text-primary:   #2A2520;    /* 主標題：深暖棕黑 */
+  --text-secondary: #5A554C;    /* 次要文字：中暖灰 */
+  --text-muted:     #9A9388;    /* 弱化說明：暖灰 */
+  --text-disabled:  #C4BDB4;    /* 禁用 */
+
+  /* ── 固定邊框色 ──────────────────────────────────────── */
+  --border-subtle:  #E4DFD6;    /* 最輕邊框（卡片） */
+  --border-normal:  #D4CEC4;    /* 標準邊框 */
+  --border-strong:  #B8B0A4;    /* 強調邊框 */
+
+  /* ── 希臘字母色（由 ThemeProvider 動態注入）────────────── */
+  --greek-delta: #7A9682;
+  --greek-gamma: #B4835A;
+  --greek-vega:  #9E908A;
+  --greek-theta: #9688A8;
+
+  /* ── 淡染色（12% opacity，由 ThemeProvider 動態注入）───── */
+  --tint-delta: #7A96821F;
+  --tint-gamma: #B4835A1F;
+  --tint-vega:  #9E908A1F;
+  --tint-theta: #9688A81F;
+
+  /* ── 半透明色（22% opacity，由 ThemeProvider 動態注入）─── */
+  --semi-delta: #7A968238;
+  --semi-gamma: #B4835A38;
+  --semi-vega:  #9E908A38;
+  --semi-theta: #9688A838;
+
+  /* ── 語意別名（向後相容）───────────────────────────────── */
+  --bg-color:      var(--bg-ivory);
+  --card-bg:       var(--surface-01);
+  --text-main:     var(--text-primary);
+  --border-color:  var(--border-subtle);
+  --color-primary: var(--greek-delta);
+
+  /* ── 尺寸 ──────────────────────────────────────────────── */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(42,37,32,0.04);
+  --shadow-sm: 0 2px 10px rgba(42,37,32,0.06);
+  --shadow-md: 0 8px 28px rgba(42,37,32,0.08);
+  --shadow-lg: 0 20px 60px rgba(42, 37, 32, 0.10);
+  --shadow-inset: inset 0 1px 3px rgba(42,37,32,0.06);
+
+  --transition-fast:   0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   0.48s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-ivory);
+  color: var(--text-primary);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* 希臘字母色系 transition（調色盤切換動畫）*/
+*, *::before, *::after {
+  transition:
+    background-color var(--transition-slow),
+    border-color var(--transition-slow),
+    box-shadow var(--transition-normal),
+    color var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+/* ================================================================
+   TYPOGRAPHY
+   ================================================================ */
+h1 {
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+h2 {
+  font-size: clamp(1.1rem, 2.5vw, 1.55rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+h3 { font-size: 1.05rem; font-weight: 600; }
+h4 {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ================================================================
+   FORM ELEMENTS
+   ================================================================ */
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--text-primary);
+  height: 3px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input[type="text"] {
+  background: var(--surface-01);
+  border: 1.5px solid var(--border-normal);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 9px 14px;
+  transition: border-color var(--transition-fast);
+}
+input[type="text"]::placeholder { color: var(--text-disabled); }
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--text-secondary);
+}
+
+input[type="color"] {
+  border: 1.5px solid var(--border-normal);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: var(--surface-01);
+}
+
+/* ================================================================
+   COMPONENTS
+   ================================================================ */
+
+/* Divider */
+hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Pill label（希臘字母標籤常用）*/
+.greek-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+.greek-tag.delta { background: var(--tint-delta); color: var(--greek-delta); border: 1px solid var(--semi-delta); }
+.greek-tag.gamma { background: var(--tint-gamma); color: var(--greek-gamma); border: 1px solid var(--semi-gamma); }
+.greek-tag.vega  { background: var(--tint-vega);  color: var(--greek-vega);  border: 1px solid var(--semi-vega); }
+.greek-tag.theta { background: var(--tint-theta); color: var(--greek-theta); border: 1px solid var(--semi-theta); }
+
+/* Button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--text-primary);
+  color: var(--bg-ivory);
+  border-color: var(--text-primary);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--text-secondary);
+  border-color: var(--text-secondary);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-normal);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-02);
+  border-color: var(--border-strong);
+}
+
+/* Card */
+.card {
+  background: var(--surface-01);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Metric display */
+.metric-number {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================================================================
+   SCROLLBAR
+   ================================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-normal); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
