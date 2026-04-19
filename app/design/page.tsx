@@ -292,14 +292,14 @@ export default function DesignPage() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '12px' }}>
             {[
-              { name: '--bg-ivory', hex: '#F6F3EE', desc: '頁面底色' },
-              { name: '--surface-01', hex: '#FDFCF9', desc: '主卡片' },
-              { name: '--surface-02', hex: '#F0EDE6', desc: '次要底板' },
-              { name: '--surface-03', hex: '#E8E3DA', desc: '輸入背景' },
-              { name: '--text-primary', hex: '#2A2520', desc: '主文字' },
-              { name: '--text-secondary', hex: '#5A554C', desc: '次文字' },
-              { name: '--text-muted', hex: '#9A9388', desc: '說明文字' },
-              { name: '--border-subtle', hex: '#E4DFD6', desc: '卡片邊框' },
+              { name: '--bg-ivory',    hex: '#F7F7F5', desc: '頁面底色' },
+              { name: '--surface-01',  hex: '#FFFFFF', desc: '主卡片' },
+              { name: '--surface-02',  hex: '#F1F0EE', desc: '次要底板' },
+              { name: '--surface-03',  hex: '#E8E7E3', desc: '輸入背景' },
+              { name: '--text-primary',hex: '#26231E', desc: '主文字' },
+              { name: '--text-secondary', hex: '#56524A', desc: '次文字' },
+              { name: '--text-muted',  hex: '#9A9590', desc: '說明文字' },
+              { name: '--border-subtle',hex: '#E4E2DC', desc: '卡片邊框' },
             ].map(({ name, hex, desc }) => (
               <div key={name}>
                 <div style={{ height: '44px', borderRadius: 'var(--radius-sm)', backgroundColor: hex, border: '1px solid var(--border-subtle)', marginBottom: '8px' }} />
