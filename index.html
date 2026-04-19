@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>選擇權定價與希臘字母模擬器</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f9; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; }
+        .dashboard { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { border-bottom: 2px solid #eaeaea; padding-bottom: 10px; margin-top: 0; }
+        .control-group { margin-bottom: 20px; }
+        .control-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; }
+        input[type=range] { width: 100%; cursor: pointer; }
+        .results { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 30px; }
+        .card { background: #fafafa; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eaeaea; }
+        .card .title { font-size: 0.9em; color: #666; margin-bottom: 5px; }
+        .card .value { font-size: 1.5em; font-weight: bold; color: #0070f3; }
+        .premium-card { background: #0070f3; color: white; border: none; }
+        .premium-card .title { color: #e0e0e0; }
+        .premium-card .value { color: white; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h2>Black-Scholes 模型模擬器 (Call Option)</h2>
+    
+    <div class="control-group">
+        <div class="control-header"><span>標的物股價 (Underlying)</span> <span id="val-s">850</span></div>
+        <input type="range" id="input-s" min="700" max="1000" value="850">
+    </div>
+    
+    <div class="control-group">
+        <div class="control-header"><span>履約價 (Strike)</span> <span id="val-k">850</span></div>
+        <input type="range" id="input-k" min="700" max="1000" value="850">
+    </div>
+    
+    <div class="control-group">
+        <div class="control-header"><span>距離到期天數 (DTE)</span> <span id="val-t">30</span></div>
+        <input type="range" id="input-t" min="1" max="90" value="30">
+    </div>
+    
+    <div class="control-group">
+        <div class="control-header"><span>隱含波動率 (IV %)</span> <span id="val-v">50%</span></div>
+        <input type="range" id="input-v" min="10" max="150" value="50">
+    </div>
+
+    <div class="results">
+        <div class="card premium-card">
+            <div class="title">權利金 (Premium)</div>
+            <div class="value" id="res-premium">0.00</div>
+        </div>
+        <div class="card">
+            <div class="title">Delta (Δ)</div>
+            <div class="value" id="res-delta">0.00</div>
+        </div>
+        <div class="card">
+            <div class="title">Gamma (Γ)</div>
+            <div class="value" id="res-gamma">0.00</div>
+        </div>
+        <div class="card">
+            <div class="title">Theta (Θ)</div>
+            <div class="value" id="res-theta">0.00</div>
+        </div>
+        <div class="card">
+            <div class="title">Vega (ν)</div>
+            <div class="value" id="res-vega">0.00</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 常態分佈機率密度函數 (PDF)
+    function normPDF(x) {
+        return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+    }
+
+    // 常態分佈累積函數 (CDF) - 使用 Abramowitz and Stegun 近似法
+    function normCDF(x) {
+        let sign = x < 0 ? -1 : 1;
+        x = Math.abs(x) / Math.sqrt(2.0);
+        let t = 1.0 / (1.0 + 0.3275911 * x);
+        let y = 1.0 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+        return 0.5 * (1.0 + sign * y);
+    }
+
+    // Black-Scholes 運算引擎
+    function calculateGreeks() {
+        let S = parseFloat(document.getElementById('input-s').value);
+        let K = parseFloat(document.getElementById('input-k').value);
+        let T = parseFloat(document.getElementById('input-t').value) / 365.0; // 將天數轉換為年
+        let v = parseFloat(document.getElementById('input-v').value) / 100.0; // 將 IV % 轉換為小數
+        let r = 0.05; // 假設無風險利率為 5%
+
+        // 避免除以零的極端情況
+        if (T <= 0) T = 0.0001; 
+
+        let d1 = (Math.log(S / K) + (r + v * v / 2.0) * T) / (v * Math.sqrt(T));
+        let d2 = d1 - v * Math.sqrt(T);
+
+        // 計算 Call 的數值
+        let premium = S * normCDF(d1) - K * Math.exp(-r * T) * normCDF(d2);
+        let delta = normCDF(d1);
+        let gamma = normPDF(d1) / (S * v * Math.sqrt(T));
+        let theta = (- (S * normPDF(d1) * v) / (2 * Math.sqrt(T)) - r * K * Math.exp(-r * T) * normCDF(d2)) / 365.0; // 轉換為每日耗損
+        let vega = S * normPDF(d1) * Math.sqrt(T) / 100.0; // 轉換為 IV 每變動 1% 的影響
+
+        // 更新 UI 數值
+        document.getElementById('val-s').innerText = S;
+        document.getElementById('val-k').innerText = K;
+        document.getElementById('val-t').innerText = (T * 365).toFixed(0);
+        document.getElementById('val-v').innerText = (v * 100).toFixed(0) + '%';
+
+        document.getElementById('res-premium').innerText = premium.toFixed(2);
+        document.getElementById('res-delta').innerText = delta.toFixed(3);
+        document.getElementById('res-gamma').innerText = gamma.toFixed(4);
+        document.getElementById('res-theta').innerText = theta.toFixed(2);
+        document.getElementById('res-vega').innerText = vega.toFixed(2);
+    }
+
+    // 綁定事件監聽器
+    const inputs = ['input-s', 'input-k', 'input-t', 'input-v'];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', calculateGreeks);
+    });
+
+    // 初始計算
+    calculateGreeks();
+</script>
+
+</body>
+</html>
