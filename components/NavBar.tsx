@@ -52,6 +52,8 @@ export function NavBar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
         {[
           { href: '/', label: t.navCalc },
+          { href: '/market', label: t.navMarket },
+          { href: '/indicators', label: t.navIndicators },
           { href: '/design', label: t.navDesign },
         ].map(({ href, label }) => {
           const active = pathname === href;
