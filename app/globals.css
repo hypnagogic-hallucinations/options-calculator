@@ -7,70 +7,83 @@
    ================================================================ */
 :root {
   /* ── 固定底色（純白 × 極淺灰系列）────────────────────── */
-  --bg-ivory:       #F7F7F5;    /* 頁面底：幾乎純白，帶極微暖灰 */
-  --surface-01:     #FFFFFF;    /* 主卡片：純白 */
-  --surface-02:     #F1F0EE;    /* 次要底板：淺暖灰 */
-  --surface-03:     #E8E7E3;    /* 分隔/輸入背景：中淺灰 */
+  --bg-ivory: #FAFAFA;
+  /* 頁面底：極淺灰 */
+  --surface-01: #FFFFFF;
+  /* 主卡片：純白 */
+  --surface-02: #F3F4F6;
+  /* 次要底板：淺灰 */
+  --surface-03: #e5e7eb;
+  /* 分隔/輸入背景：中灰 */
 
   /* ── 固定文字色 ──────────────────────────────────────── */
-  --text-primary:   #26231E;    /* 主標題：深暖棕黑 */
-  --text-secondary: #56524A;    /* 次要文字：中暖灰 */
-  --text-muted:     #9A9590;    /* 弱化說明：暖灰 */
-  --text-disabled:  #C4C0B8;    /* 禁用 */
+  --text-primary: #444444;
+  /* 主標題：深灰黑 */
+  --text-secondary: #555555;
+  /* 次要文字：中淺灰 */
+  --text-muted: #777777;
+  /* 弱化說明：淺灰 */
+  --text-disabled: #D1D5DB;
+  /* 禁用 */
 
   /* ── 固定邊框色（白色卡片上要出現）────────────────────── */
-  --border-subtle:  #E4E2DC;    /* 最輕邊框（純白卡片上可見） */
-  --border-normal:  #D2CEC6;    /* 標準邊框 */
-  --border-strong:  #B4B0A8;    /* 強調邊框 */
+  --border-subtle: #F3F4F6;
+  /* 最輕邊框（純白卡片上可見） */
+  --border-normal: #E5E7EB;
+  /* 標準邊框 */
+  --border-strong: #D1D5DB;
+  /* 強調邊框 */
 
   /* ── 希臘字母色（由 ThemeProvider 動態注入）────────────── */
   --greek-delta: #7A9682;
   --greek-gamma: #B4835A;
-  --greek-vega:  #9E908A;
+  --greek-vega: #9E908A;
   --greek-theta: #9688A8;
 
   /* ── 淡染色（12% opacity，由 ThemeProvider 動態注入）───── */
   --tint-delta: #7A96821F;
   --tint-gamma: #B4835A1F;
-  --tint-vega:  #9E908A1F;
+  --tint-vega: #9E908A1F;
   --tint-theta: #9688A81F;
 
   /* ── 半透明色（22% opacity，由 ThemeProvider 動態注入）─── */
   --semi-delta: #7A968238;
   --semi-gamma: #B4835A38;
-  --semi-vega:  #9E908A38;
+  --semi-vega: #9E908A38;
   --semi-theta: #9688A838;
 
   /* ── 語意別名（向後相容）───────────────────────────────── */
-  --bg-color:      var(--bg-ivory);
-  --card-bg:       var(--surface-01);
-  --text-main:     var(--text-primary);
-  --border-color:  var(--border-subtle);
+  --bg-color: var(--bg-ivory);
+  --card-bg: var(--surface-01);
+  --text-main: var(--text-primary);
+  --border-color: var(--border-subtle);
   --color-primary: var(--greek-delta);
 
   /* ── 尺寸 ──────────────────────────────────────────────── */
-  --radius-xs:   4px;
-  --radius-sm:   8px;
-  --radius-md:   12px;
-  --radius-lg:   20px;
-  --radius-xl:   28px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
 
-  --shadow-xs: 0 1px 2px rgba(42,37,32,0.04);
-  --shadow-sm: 0 2px 10px rgba(42,37,32,0.06);
-  --shadow-md: 0 8px 28px rgba(42,37,32,0.08);
-  --shadow-lg: 0 20px 60px rgba(42, 37, 32, 0.10);
-  --shadow-inset: inset 0 1px 3px rgba(42,37,32,0.06);
+  --shadow-xs: 0 1px 2px rgba(156, 163, 175, 0.15), 0 1px 1px rgba(255, 255, 255, 0.8);
+  --shadow-sm: 0 2px 8px rgba(156, 163, 175, 0.2), 0 1px 2px rgba(255, 255, 255, 0.8);
+  --shadow-md: 0 8px 24px rgba(156, 163, 175, 0.25), 0 4px 12px rgba(255, 255, 255, 0.6);
+  --shadow-lg: 0 20px 48px rgba(156, 163, 175, 0.3), 0 8px 24px rgba(255, 255, 255, 0.5);
+  --shadow-inset: inset 0 2px 4px rgba(156, 163, 175, 0.2);
 
-  --transition-fast:   0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow:   0.48s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.48s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ================================================================
    RESET & BASE
    ================================================================ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -91,15 +104,17 @@ body {
   min-height: 100vh;
 }
 
-/* 希臘字母色系 transition（調色盤切換動畫）*/
-*, *::before, *::after {
+/* 希臘字母色系 transition（調色盤切換動畫）
+   ⚠️  不包含 transform — 避免 DatePicker / Popper 元件定位被動畫干擾 */
+*,
+*::before,
+*::after {
   transition:
     background-color var(--transition-slow),
     border-color var(--transition-slow),
     box-shadow var(--transition-normal),
     color var(--transition-fast),
-    opacity var(--transition-fast),
-    transform var(--transition-fast);
+    opacity var(--transition-fast);
 }
 
 /* ================================================================
@@ -107,24 +122,40 @@ body {
    ================================================================ */
 h1 {
   font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
   color: var(--text-primary);
 }
+
 h2 {
   font-size: clamp(1.1rem, 2.5vw, 1.55rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
 }
-h3 { font-size: 1.05rem; font-weight: 600; }
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
 h4 {
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
+}
+
+span {
+  letter-spacing: 0.05em;
+}
+
+canvas {
+  letter-spacing: 0.05em;
+
 }
 
 /* ================================================================
@@ -132,7 +163,8 @@ h4 {
    ================================================================ */
 input[type="range"] {
   width: 100%;
-  accent-color: var(--text-primary);
+  /* accent-color is overridden via inline style per-slider for Greek-letter coloring */
+  accent-color: var(--color-primary, var(--text-primary));
   height: 3px;
   cursor: pointer;
   border: none;
@@ -149,7 +181,11 @@ input[type="text"] {
   padding: 9px 14px;
   transition: border-color var(--transition-fast);
 }
-input[type="text"]::placeholder { color: var(--text-disabled); }
+
+input[type="text"]::placeholder {
+  color: var(--text-disabled);
+}
+
 input[type="text"]:focus {
   outline: none;
   border-color: var(--text-secondary);
@@ -183,10 +219,30 @@ hr {
   padding: 3px 10px;
   border-radius: var(--radius-full);
 }
-.greek-tag.delta { background: var(--tint-delta); color: var(--greek-delta); border: 1px solid var(--semi-delta); }
-.greek-tag.gamma { background: var(--tint-gamma); color: var(--greek-gamma); border: 1px solid var(--semi-gamma); }
-.greek-tag.vega  { background: var(--tint-vega);  color: var(--greek-vega);  border: 1px solid var(--semi-vega); }
-.greek-tag.theta { background: var(--tint-theta); color: var(--greek-theta); border: 1px solid var(--semi-theta); }
+
+.greek-tag.delta {
+  background: var(--tint-delta);
+  color: var(--greek-delta);
+  border: 1px solid var(--semi-delta);
+}
+
+.greek-tag.gamma {
+  background: var(--tint-gamma);
+  color: var(--greek-gamma);
+  border: 1px solid var(--semi-gamma);
+}
+
+.greek-tag.vega {
+  background: var(--tint-vega);
+  color: var(--greek-vega);
+  border: 1px solid var(--semi-vega);
+}
+
+.greek-tag.theta {
+  background: var(--tint-theta);
+  color: var(--greek-theta);
+  border: 1px solid var(--semi-theta);
+}
 
 /* Button */
 .btn {
@@ -197,18 +253,25 @@ hr {
   font-family: inherit;
   font-size: 13px;
   font-weight: 500;
+  letter-spacing: 0.02em;
   border-radius: var(--radius-md);
   cursor: pointer;
   border: 1.5px solid transparent;
   white-space: nowrap;
 }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .btn-primary {
   background: var(--text-primary);
   color: var(--bg-ivory);
   border-color: var(--text-primary);
+  box-shadow: var(--shadow-xs);
 }
+
 .btn-primary:hover:not(:disabled) {
   background: var(--text-secondary);
   border-color: var(--text-secondary);
@@ -219,6 +282,7 @@ hr {
   color: var(--text-secondary);
   border-color: var(--border-normal);
 }
+
 .btn-ghost:hover:not(:disabled) {
   background: var(--surface-02);
   border-color: var(--border-strong);
@@ -235,8 +299,8 @@ hr {
 /* Metric display */
 .metric-number {
   font-size: 1.75rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -244,7 +308,247 @@ hr {
 /* ================================================================
    SCROLLBAR
    ================================================================ */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-normal); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-normal);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ================================================================
+   REACT DATEPICKER OVERRIDES (Japandi Minimal)
+   ================================================================ */
+.react-datepicker-wrapper {
+  display: inline-block;
+}
+
+/* ⚠️  Popper must NOT have transform transition — it uses CSS transforms
+   for positioning. The transition reset below is the critical fix. */
+.react-datepicker-popper {
+  z-index: 100 !important;
+  /* Suppress ALL transitions on the popper so positioning stays stable */
+  transition: none !important;
+}
+
+.react-datepicker-popper *,
+.react-datepicker-popper *::before,
+.react-datepicker-popper *::after {
+  transition: background-color var(--transition-fast),
+    color var(--transition-fast) !important;
+}
+
+.react-datepicker {
+  background-color: var(--surface-01) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-md) !important;
+  font-family: inherit !important;
+  color: var(--text-primary) !important;
+  /* Prevent any inherited transform transitions */
+  transform: none;
+}
+
+.react-datepicker__header {
+  background-color: var(--surface-01) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  border-top-left-radius: var(--radius-md) !important;
+  border-top-right-radius: var(--radius-md) !important;
+  padding-top: 10px !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: var(--text-primary) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.05em;
+}
+
+.react-datepicker__day-name {
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day {
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-sm) !important;
+  transition: background-color var(--transition-fast) !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: var(--surface-02) !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: var(--text-primary) !important;
+  color: var(--surface-01) !important;
+  font-weight: 500;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: var(--text-muted) !important;
+}
+
+.react-datepicker__triangle {
+  display: none !important;
+}
+
+/* ================================================================
+   CYBERPUNK DARK THEME
+   Apply data-theme="cyberpunk" to <html> to activate.
+   Palette (synced with CYBER constant in ThemeProvider.tsx):
+     delta  #00ff9d  neon green
+     gamma  #00ffff  electric cyan
+     vega   #f3ff50  electric yellow-lime
+     theta  #ff00f2  hot magenta
+   ================================================================ */
+[data-theme="cyberpunk"] {
+  /* ── Base backgrounds: deep black ── */
+  --bg-ivory:    #0A0A0F;
+  --surface-01:  #0F0F1A;
+  --surface-02:  #141428;
+  --surface-03:  #1A1A35;
+
+  /* ── Text ── */
+  --text-primary:   #E0E0FF;
+  --text-secondary: #A0A0D0;
+  --text-muted:     #5050A0;
+  --text-disabled:  #2A2A50;
+
+  /* ── Borders ── */
+  --border-subtle: #1E1E40;
+  --border-normal: #2A2A60;
+  --border-strong: #3A3A80;
+
+  /* ── Shadows: flat, no glow ── */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.7);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.9);
+
+  /* ── Alias ── */
+  --bg-color:     var(--bg-ivory);
+  --card-bg:      var(--surface-01);
+  --text-main:    var(--text-primary);
+  --border-color: var(--border-subtle);
+
+  /* ── Greek neon colors ── */
+  --greek-delta: #00ff9d;  /* neon green */
+  --greek-gamma: #00ffff;  /* electric cyan */
+  --greek-vega:  #f3ff50;  /* electric yellow-lime */
+  --greek-theta: #ff00f2;  /* hot magenta */
+
+  --tint-delta: rgba(  0, 255, 157, 0.10);
+  --tint-gamma: rgba(  0, 255, 255, 0.10);
+  --tint-vega:  rgba(243, 255,  80, 0.10);
+  --tint-theta: rgba(255,   0, 242, 0.10);
+
+  --semi-delta: rgba(  0, 255, 157, 0.20);
+  --semi-gamma: rgba(  0, 255, 255, 0.20);
+  --semi-vega:  rgba(243, 255,  80, 0.20);
+  --semi-theta: rgba(255,   0, 242, 0.20);
+
+  --color-primary: var(--greek-delta);
+}
+
+/* Cyberpunk body — flat dark, no scanline */
+[data-theme="cyberpunk"] body {
+  background-color: var(--bg-ivory);
+}
+
+/* Cyberpunk card */
+[data-theme="cyberpunk"] .card {
+  background: var(--surface-01);
+  border: 1px solid var(--border-normal);
+  box-shadow: none;
+}
+
+/* Cyberpunk button */
+[data-theme="cyberpunk"] .btn-primary {
+  background: transparent;
+  color: var(--greek-delta);
+  border: 1px solid var(--greek-delta);
+  box-shadow: none;
+  text-shadow: none;
+  letter-spacing: 0.08em;
+}
+
+[data-theme="cyberpunk"] .btn-primary:hover:not(:disabled) {
+  background: var(--tint-delta);
+  box-shadow: none;
+}
+
+[data-theme="cyberpunk"] .btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-normal);
+}
+
+/* Cyberpunk input */
+[data-theme="cyberpunk"] input[type="text"] {
+  background: var(--surface-02);
+  border-color: var(--border-normal);
+  color: var(--text-primary);
+  caret-color: var(--greek-delta);
+  box-shadow: none;
+}
+
+[data-theme="cyberpunk"] input[type="text"]:focus {
+  border-color: var(--greek-delta);
+  box-shadow: none;
+}
+
+/* Cyberpunk datepicker */
+[data-theme="cyberpunk"] .react-datepicker {
+  background-color: var(--surface-01) !important;
+  border: 1px solid var(--border-normal) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="cyberpunk"] .react-datepicker__header {
+  background-color: var(--surface-02) !important;
+  border-bottom-color: var(--border-normal) !important;
+}
+
+[data-theme="cyberpunk"] .react-datepicker__current-month {
+  color: var(--greek-delta) !important;
+  text-shadow: none;
+}
+
+[data-theme="cyberpunk"] .react-datepicker__day-name {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="cyberpunk"] .react-datepicker__day {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="cyberpunk"] .react-datepicker__day--selected {
+  background-color: var(--greek-delta) !important;
+  color: #fff !important;
+  box-shadow: none;
+}
+
+[data-theme="cyberpunk"] .react-datepicker__day:hover {
+  background-color: var(--tint-delta) !important;
+  color: var(--greek-delta) !important;
+}
+
+/* Cyberpunk scrollbar */
+[data-theme="cyberpunk"] ::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  box-shadow: none;
+}

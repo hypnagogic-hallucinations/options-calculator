@@ -17,6 +17,50 @@ export interface ColorPalette {
   theta: string;   // Θ 時間衰蝕
 }
 
+export type DarkMode = 'light' | 'cyberpunk';
+
+// ----------------------------------------------------------------
+// Single source of truth for all Cyberpunk colours.
+//
+// ⚠️  SYNC REMINDER:
+//   globals.css uses hardcoded rgba() for ambient glow effects (e.g.
+//   button box-shadow, scanline overlay, datepicker hover) because CSS
+//   cannot import from JS.  If you change greek colours here, update
+//   the matching rgba() values in the [data-theme="cyberpunk"] block
+//   in globals.css as well.
+// ----------------------------------------------------------------
+export const CYBER = {
+  /** Greek letter neon colours */
+  greek: {
+    delta: '#00ff9d',   // neon green
+    gamma: '#00ffff',   // electric cyan
+    vega:  '#f3ff50',   // electric yellow-lime
+    theta: '#ff00f2',   // hot magenta
+  },
+  /** Dark surface palette */
+  surface: {
+    bg:        '#0A0A0F',
+    surface01: '#0F0F1A',
+    surface02: '#141428',
+    surface03: '#1A1A35',
+  },
+  /** Text colours */
+  text: {
+    primary:   '#E0E0FF',
+    secondary: '#A0A0D0',
+    muted:     '#5050A0',
+    disabled:  '#2A2A50',
+  },
+  /** Border colours */
+  border: {
+    subtle: '#1E1E40',
+    normal: '#2A2A60',
+    strong: '#3A3A80',
+  },
+} as const;
+
+
+
 export const PALETTES: ColorPalette[] = [
   {
     name: 'Wabi-Sabi',
@@ -71,7 +115,7 @@ export const PALETTES: ColorPalette[] = [
   {
     name: 'Mineral',
     nameZh: '礦石',
-    emoji: '🪨',
+    emoji: '💎',
     description: '岩藍・鏽橘・銅綠・石灰紫 — 礦物質的沉靜力量',
     delta: '#5490AA',   // mineral blue +sat (was #7090A0 S20→S32%)
     gamma: '#BA6030',   // rust orange +sat (was #B07858 S35→S47%)
@@ -107,6 +151,8 @@ interface ThemeContextType {
   palettes: ColorPalette[];
   setPaletteIndex: (i: number) => void;
   setCustomPalette: (delta: string, gamma: string, vega: string, theta: string, name?: string) => void;
+  darkMode: DarkMode;
+  setDarkMode: (m: DarkMode) => void;
   // 向後相容
   hue: number;
   setHue: (h: number) => void;
@@ -118,6 +164,8 @@ const ThemeContext = createContext<ThemeContextType>({
   palettes: PALETTES,
   setPaletteIndex: () => {},
   setCustomPalette: () => {},
+  darkMode: 'light',
+  setDarkMode: () => {},
   hue: 200,
   setHue: () => {},
 });
@@ -129,12 +177,66 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [paletteIndex, setPaletteIndexState] = useState(0);
   const [customPalette, setCustomPaletteState] = useState<ColorPalette | null>(null);
   const [hue, setHue] = useState(200);
+  const [darkMode, setDarkModeState] = useState<DarkMode>('light');
 
   const currentPalette = customPalette ?? PALETTES[paletteIndex];
 
+  // Unified colour injection.
+  // ⚠️  root.style.setProperty (inline) beats any CSS-var rule.
+  //     So in cyberpunk mode we MUST inject neon values here (not rely on
+  //     the stylesheet), and when switching back we REMOVE the inline overrides
+  //     so the default CSS vars kick in again.
   useEffect(() => {
-    const { delta, gamma, vega, theta } = currentPalette;
     const root = document.documentElement;
+    root.setAttribute('data-theme', darkMode);
+
+    if (darkMode === 'cyberpunk') {
+      // ── Neon Greek colors (sourced from CYBER constant) ───────────
+      const { delta, gamma, vega, theta } = CYBER.greek;
+      root.style.setProperty('--greek-delta', delta);
+      root.style.setProperty('--greek-gamma', gamma);
+      root.style.setProperty('--greek-vega',  vega);
+      root.style.setProperty('--greek-theta', theta);
+
+      // tint/semi computed by withOpacity — same as Morandi, stays in sync
+      root.style.setProperty('--tint-delta', withOpacity(delta, 0.08));
+      root.style.setProperty('--tint-gamma', withOpacity(gamma, 0.08));
+      root.style.setProperty('--tint-vega',  withOpacity(vega,  0.08));
+      root.style.setProperty('--tint-theta', withOpacity(theta, 0.08));
+
+      root.style.setProperty('--semi-delta', withOpacity(delta, 0.20));
+      root.style.setProperty('--semi-gamma', withOpacity(gamma, 0.20));
+      root.style.setProperty('--semi-vega',  withOpacity(vega,  0.20));
+      root.style.setProperty('--semi-theta', withOpacity(theta, 0.20));
+
+      // ── Override surface / text / border ─────────────────────────
+      root.style.setProperty('--bg-ivory',       CYBER.surface.bg);
+      root.style.setProperty('--surface-01',     CYBER.surface.surface01);
+      root.style.setProperty('--surface-02',     CYBER.surface.surface02);
+      root.style.setProperty('--surface-03',     CYBER.surface.surface03);
+      root.style.setProperty('--text-primary',   CYBER.text.primary);
+      root.style.setProperty('--text-secondary', CYBER.text.secondary);
+      root.style.setProperty('--text-muted',     CYBER.text.muted);
+      root.style.setProperty('--text-disabled',  CYBER.text.disabled);
+      root.style.setProperty('--border-subtle',  CYBER.border.subtle);
+      root.style.setProperty('--border-normal',  CYBER.border.normal);
+      root.style.setProperty('--border-strong',  CYBER.border.strong);
+      return;
+    }
+
+    // ── Light mode: restore Morandi palette ───────────────────────────
+    // First remove any inline overrides left from cyberpunk mode
+    const allVars = [
+      '--greek-delta','--greek-gamma','--greek-vega','--greek-theta',
+      '--tint-delta','--tint-gamma','--tint-vega','--tint-theta',
+      '--semi-delta','--semi-gamma','--semi-vega','--semi-theta',
+      '--bg-ivory','--surface-01','--surface-02','--surface-03',
+      '--text-primary','--text-secondary','--text-muted','--text-disabled',
+      '--border-subtle','--border-normal','--border-strong',
+    ];
+    allVars.forEach(v => root.style.removeProperty(v));
+
+    const { delta, gamma, vega, theta } = currentPalette;
 
     // ── 希臘字母主色（莫蘭迪色，飽和實色）
     root.style.setProperty('--greek-delta', delta);
@@ -153,7 +255,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--semi-gamma', withOpacity(gamma, 0.22));
     root.style.setProperty('--semi-vega',  withOpacity(vega,  0.22));
     root.style.setProperty('--semi-theta', withOpacity(theta, 0.22));
-  }, [currentPalette]);
+  }, [currentPalette, darkMode]);
 
   const setPaletteIndex = (i: number) => {
     setCustomPaletteState(null);
@@ -168,10 +270,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const setDarkMode = (m: DarkMode) => setDarkModeState(m);
+
+  const effectivePalette = darkMode === 'cyberpunk'
+    ? { ...currentPalette, ...CYBER.greek }
+    : currentPalette;
+
   return (
     <ThemeContext.Provider value={{
-      palette: currentPalette, paletteIndex, palettes: PALETTES,
-      setPaletteIndex, setCustomPalette, hue, setHue,
+      palette: effectivePalette, paletteIndex, palettes: PALETTES,
+      setPaletteIndex, setCustomPalette,
+      darkMode, setDarkMode,
+      hue, setHue,
     }}>
       {children}
     </ThemeContext.Provider>

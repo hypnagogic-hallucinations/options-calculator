@@ -48,8 +48,8 @@
   --bg-ivory      #F6F3EE  頁面底色
   --surface-01    #FDFCF9  卡片表面
   --surface-02    #F0EDE6  次要底板
-  --text-primary  #2A2520  主文字
-  --text-muted    #9A9388  說明文字
+  --text-primary  #444444  主文字
+  --text-muted    #777777  說明文字
   --border-subtle #E4DFD6  邊框
 
 第二層：Greek Morandi Colors（希臘字母莫蘭迪色，隨調色盤切換）

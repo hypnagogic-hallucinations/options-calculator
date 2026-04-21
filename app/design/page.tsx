@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useMemo } from 'react';
-import { useTheme, PALETTES } from '@/components/ThemeProvider';
+import { useTheme, PALETTES, CYBER } from '@/components/ThemeProvider';
+
 import { getHarmony, getContrastColor, hexToHsl, hslToHex } from '@/lib/colorUtils';
 
 // ────────────────────────────────────────────────────────────────
@@ -57,10 +58,11 @@ function HarmonyRow({ title, angle, colors }: { title: string; angle: string; co
 // Main
 // ────────────────────────────────────────────────────────────────
 export default function DesignPage() {
-  const { palette, paletteIndex, palettes, setPaletteIndex, setCustomPalette } = useTheme();
+  const { palette, paletteIndex, palettes, setPaletteIndex, setCustomPalette, darkMode, setDarkMode } = useTheme();
   const [pickerColor, setPickerColor] = useState('#7A9682');
   const [sat, setSat] = useState(30);
   const [lit, setLit] = useState(52);
+  const isCyberpunk = darkMode === 'cyberpunk';
 
   const effectiveBase = useMemo(() => {
     const [h] = hexToHsl(pickerColor);
@@ -108,7 +110,8 @@ export default function DesignPage() {
         {/* Current Greek colors */}
         <div className="card" style={{ padding: '32px', marginBottom: '20px' }}>
           <h4 style={{ marginBottom: '24px' }}>
-            {palette.emoji} {palette.nameZh} · {palette.name}
+            {palette.emoji} {palette.name}
+            <span style={{ fontWeight: 400, color: 'var(--text-muted)', marginLeft: '6px' }}>· {palette.nameZh}</span>
           </h4>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '28px' }}>{palette.description}</p>
 
@@ -143,14 +146,14 @@ export default function DesignPage() {
         </div>
 
         {/* 7 Palette gallery */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px', marginBottom: '16px' }}>
           {palettes.map((p, i) => {
-            const active = i === paletteIndex;
+            const active = i === paletteIndex && !isCyberpunk;
             const pColors = [p.delta, p.gamma, p.vega, p.theta];
             return (
               <div
                 key={p.name}
-                onClick={() => setPaletteIndex(i)}
+                onClick={() => { setDarkMode('light'); setPaletteIndex(i); }}
                 style={{
                   padding: '16px',
                   borderRadius: 'var(--radius-lg)',
@@ -159,7 +162,8 @@ export default function DesignPage() {
                   cursor: 'pointer',
                   boxShadow: active ? `0 0 0 4px ${p.delta}18` : 'none',
                   transform: active ? 'translateY(-2px)' : 'translateY(0)',
-                  transition: 'all 0.2s ease',
+                  transition: 'border 0.2s ease, box-shadow 0.2s ease',
+                  opacity: isCyberpunk ? 0.5 : 1,
                 }}
               >
                 {/* 4-color stripe */}
@@ -170,7 +174,8 @@ export default function DesignPage() {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
                   <span style={{ fontSize: '15px' }}>{p.emoji}</span>
-                  <span style={{ fontSize: '13px', fontWeight: 600 }}>{p.nameZh}</span>
+                  <span style={{ fontSize: '13px', fontWeight: 600 }}>{p.name}</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>{p.nameZh}</span>
                   {active && <span style={{
                     marginLeft: 'auto', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em',
                     backgroundColor: p.delta, color: getContrastColor(p.delta),
@@ -187,6 +192,37 @@ export default function DesignPage() {
             );
           })}
         </div>
+
+        {/* Cyberpunk toggle card */}
+        <div
+          onClick={() => setDarkMode(isCyberpunk ? 'light' : 'cyberpunk')}
+          style={{
+            padding: '16px',
+            borderRadius: 'var(--radius-lg)',
+            border: isCyberpunk ? `2px solid ${CYBER.greek.delta}` : '2px solid var(--border-subtle)',
+            backgroundColor: isCyberpunk ? `${CYBER.greek.delta}0A` : 'var(--surface-01)',
+            cursor: 'pointer',
+            boxShadow: isCyberpunk ? `0 0 20px ${CYBER.greek.delta}4D` : 'none',
+            transition: 'border 0.2s ease, box-shadow 0.2s ease',
+          }}
+        >
+          <div style={{ display: 'flex', height: '8px', borderRadius: '4px', overflow: 'hidden', marginBottom: '14px',
+            background: `linear-gradient(90deg, ${CYBER.greek.delta} 0%, ${CYBER.greek.gamma} 33%, ${CYBER.greek.vega} 66%, ${CYBER.greek.theta} 100%)` }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+            <span style={{ fontSize: '15px' }}>⚡</span>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: isCyberpunk ? CYBER.greek.delta : undefined,
+              textShadow: isCyberpunk ? `0 0 8px ${CYBER.greek.delta}` : undefined }}>Cyberpunk</span>
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>暗黑霓虹</span>
+            {isCyberpunk && <span style={{
+              marginLeft: 'auto', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em',
+              backgroundColor: CYBER.greek.delta, color: '#000',
+              padding: '2px 7px', borderRadius: 'var(--radius-full)',
+              boxShadow: `0 0 6px ${CYBER.greek.delta}`,
+            }}>ON</span>}
+          </div>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.5 }}>黑底螢光字 · 霓虹希臘字母 · 賽博龐克夜景</div>
+        </div>
+
       </section>
 
       {/* ── Color Harmony Calculator ── */}
